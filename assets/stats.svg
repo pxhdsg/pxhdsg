@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="210" viewBox="0 0 1000 210" role="img" aria-label="GitHub public statistics for pxhdsg: 0 repositories, 0 stars, 0 followers">
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="210" viewBox="0 0 1000 210" role="img" aria-label="GitHub public statistics for pxhdsg: 1 repositories, 0 stars, 0 followers">
   <defs>
     <linearGradient id="bg" x2="1" y2="1">
       <stop offset="0" stop-color="#101831"/>
@@ -18,7 +18,7 @@
   
   <g transform="translate(58 0)">
     <text x="0" y="70" class="label">PUBLIC REPOS</text>
-    <text x="0" y="134" class="value">0</text>
+    <text x="0" y="134" class="value">1</text>
     <text x="258" y="134" class="marker">01</text>
     <path d="M 0 153 H 260" stroke="#58718b" stroke-opacity=".55"/>
   </g>

@@ -36,11 +36,6 @@
     <circle cx="688" cy="266" r="2"><animate attributeName="opacity" values=".2;1;.2" dur="3.7s" repeatCount="indefinite"/></circle>
     <circle cx="1133" cy="51" r="2"><animate attributeName="opacity" values="1;.18;1" dur="4.8s" repeatCount="indefinite"/></circle>
   </g>
-  <g fill="#ffc3e5">
-    <path d="M 777 70 h 9 m -4.5 -4.5 v 9" stroke="#ffc3e5" stroke-width="1.5"/>
-    <path d="M 1105 247 h 9 m -4.5 -4.5 v 9" stroke="#ffc3e5" stroke-width="1.5"/>
-  </g>
-
   <g font-family="Segoe UI, Arial, sans-serif">
     <text x="78" y="88" fill="#77eadb" font-size="16" font-weight="700" letter-spacing="4">PXHDSG   /   OPEN LAB 001</text>
     <text x="75" y="172" fill="#f7f6ff" font-size="58" font-weight="800" letter-spacing="2">IDEAS IN MOTION</text>
@@ -54,7 +49,6 @@
     <circle r="78" fill="none" stroke="#6be8dc" stroke-opacity=".5" stroke-width="2" stroke-dasharray="5 8"/>
     <circle r="46" fill="#171e45" stroke="#bba5ff" stroke-width="2"/>
     <circle r="28" fill="#273865"/>
-    <path d="M -14 0 H 14 M 0 -14 V 14" stroke="#7af5e1" stroke-width="2" stroke-linecap="round"/>
     <g>
       <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="16s" repeatCount="indefinite"/>
       <circle cx="0" cy="-109" r="8" fill="#ff97cb" filter="url(#soft-glow)" opacity=".8"/>

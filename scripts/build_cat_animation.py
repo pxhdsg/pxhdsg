@@ -125,7 +125,7 @@ def gif_palette(frames: list[Image.Image]) -> Image.Image:
     quantized = sample.quantize(colors=255, method=Image.MEDIANCUT)
     colors = quantized.getpalette()[:765]
     palette = Image.new("P", (1, 1))
-    palette.putpalette([255, 0, 255] + colors + [0] * (768 - 3 - len(colors)))
+    palette.putpalette([13, 17, 23] + colors + [0] * (768 - 3 - len(colors)))
     return palette
 
 

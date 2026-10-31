@@ -10,22 +10,36 @@ from scipy import ndimage
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / "assets"
 FRAMES = ASSETS / "cat-frames"
-SOURCES = {"sit": ASSETS / "cat-cutout.png", "wave": ASSETS / "cat-wave.png"}
+SOURCES = {
+    "sit": ASSETS / "cat-cutout.png",
+    "stretch": ASSETS / "cat-stretch.png",
+    "leap": ASSETS / "cat-leap.png",
+    "sleep": ASSETS / "cat-sleep.png",
+}
 
-# Pose, tail angle, vertical bounce, eye state, hold time (milliseconds).
+# Pose, horizontal/vertical offset, size, eyes, hold time, tail angle.
 STATES = [
-    ("sit", -5, 0, "open", 240),
-    ("sit", -3, -2, "open", 140),
-    ("sit", 0, -4, "open", 130),
-    ("sit", 3, -3, "half", 110),
-    ("sit", 5, -2, "closed", 110),
-    ("sit", 4, 0, "half", 110),
-    ("wave", 1, 1, "open", 180),
-    ("wave", -2, -3, "open", 130),
-    ("wave", -5, -1, "open", 160),
-    ("sit", -3, -2, "open", 130),
-    ("sit", 0, 0, "open", 170),
-    ("sit", -3, 0, "open", 200),
+    ("sit", 0, 0, 1, "open", 240, -5),
+    ("sit", 0, -3, 1, "open", 150, -2),
+    ("sit", 0, -4, 1, "half", 90, 2),
+    ("sit", 0, -3, 1, "closed", 100, 5),
+    ("sit", 0, 0, 1, "open", 160, 2),
+    ("stretch", 0, 0, 1, "open", 220, 0),
+    ("stretch", 0, 2, 1.02, "open", 140, 0),
+    ("stretch", 0, 0, 1.03, "open", 140, 0),
+    ("stretch", 0, -2, 1, "open", 180, 0),
+    ("leap", -18, 24, 1, "open", 120, 0),
+    ("leap", -10, 8, 1, "open", 110, 0),
+    ("leap", 0, -12, 1, "open", 110, 0),
+    ("leap", 10, -6, 1, "open", 110, 0),
+    ("leap", 18, 20, 1, "open", 130, 0),
+    ("sit", 0, -2, 1, "open", 190, -2),
+    ("sleep", 0, 0, 1, "closed", 250, 0),
+    ("sleep", 0, 0, 1.015, "closed", 230, 0),
+    ("sleep", 0, 0, 1.025, "closed", 230, 0),
+    ("sleep", 0, 0, 1.015, "closed", 230, 0),
+    ("sleep", 0, 0, 1, "closed", 260, 0),
+    ("sit", 0, 0, 1, "open", 240, -5),
 ]
 
 
@@ -78,14 +92,27 @@ def draw_blink(image: Image.Image, state: str) -> None:
 
 
 def make_frame(layers: dict, state: tuple) -> Image.Image:
-    pose, tail_angle, bob, eyes, _ = state
-    body, tail = layers[pose]
-    moved_tail = tail.rotate(tail_angle, center=(506, 1006), resample=Image.BICUBIC)
-    image = Image.alpha_composite(moved_tail, body)
-    draw_blink(image, eyes)
-    image = image.crop((45, 50, 1215, 1220)).resize((328, 328), Image.LANCZOS)
+    pose, dx, dy, size, eyes, _, tail_angle = state
+    if pose == "sit":
+        body, tail = layers[pose]
+        moved_tail = tail.rotate(tail_angle, center=(506, 1006), resample=Image.BICUBIC)
+        image = Image.alpha_composite(moved_tail, body)
+        draw_blink(image, eyes)
+    else:
+        image = layers[pose].copy()
+    bounds = image.getchannel("A").getbbox()
+    image = image.crop((max(0, bounds[0] - 10), max(0, bounds[1] - 10),
+                        min(image.width, bounds[2] + 10), min(image.height, bounds[3] + 10)))
+    max_width, max_height = {
+        "sit": (326, 322), "stretch": (326, 315),
+        "leap": (330, 290), "sleep": (322, 280),
+    }[pose]
+    ratio = min(max_width / image.width, max_height / image.height) * size
+    image = image.resize((round(image.width * ratio), round(image.height * ratio)), Image.LANCZOS)
     canvas = Image.new("RGBA", (360, 360))
-    canvas.alpha_composite(image, (16, 10 + bob))
+    x = (360 - image.width) // 2 + dx
+    y = ((360 - image.height) // 2 + dy if pose == "leap" else 340 - image.height + dy)
+    canvas.alpha_composite(image, (x, y))
     return canvas
 
 
@@ -102,18 +129,21 @@ def gif_palette(frames: list[Image.Image]) -> Image.Image:
 
 def main() -> None:
     FRAMES.mkdir(exist_ok=True)
-    layers = {pose: split_tail(clean_source(path)) for pose, path in SOURCES.items()}
+    layers = {pose: (split_tail(clean_source(path)) if pose == "sit" else clean_source(path))
+              for pose, path in SOURCES.items()}
     frames = [make_frame(layers, state) for state in STATES]
     for index, frame in enumerate(frames):
         frame.save(FRAMES / f"frame-{index:02d}.png", optimize=True)
 
-    sheet = Image.new("RGB", (360 * 4, 390 * 3), "#101820")
+    columns = 5
+    rows = (len(frames) + columns - 1) // columns
+    sheet = Image.new("RGB", (360 * columns, 390 * rows), "#101820")
     sheet_draw = ImageDraw.Draw(sheet)
     for index, frame in enumerate(frames):
-        x = index % 4 * 360
-        y = index // 4 * 390
+        x = index % columns * 360
+        y = index // columns * 390
         sheet.paste(frame, (x, y), frame)
-        sheet_draw.text((x + 18, y + 352), f"FRAME {index + 1:02d}", fill="#b7d9e4")
+        sheet_draw.text((x + 18, y + 352), f"FRAME {index + 1:02d} / {STATES[index][0].upper()}", fill="#b7d9e4")
     sheet.save(FRAMES / "contact-sheet.png", optimize=True)
 
     palette = gif_palette(frames)
@@ -129,7 +159,7 @@ def main() -> None:
         ASSETS / "snow-cat-animated.gif",
         save_all=True,
         append_images=indexed[1:],
-        duration=[state[4] for state in STATES],
+        duration=[state[5] for state in STATES],
         loop=0,
         disposal=2,
         transparency=0,

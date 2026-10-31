@@ -6,7 +6,7 @@
   <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&amp;size=19&amp;duration=2600&amp;pause=900&amp;color=63E6D6&amp;center=true&amp;vCenter=true&amp;width=760&amp;height=40&amp;lines=Ideas+become+experiments.;Experiments+become+stories.;The+next+chapter+is+still+loading..." alt="不断变化的创作宣言" />
 </p>
 
-<img src="./assets/snow-cat-animated.gif" align="right" width="220" alt="从头像中走出来的雪地像素猫：眨眼、摇尾巴、抬爪挥手" />
+<img src="./assets/snow-cat-animated.gif" align="right" width="220" alt="从头像中走出来的雪地像素猫：眨眼、伸懒腰、跃起、蜷着睡觉" />
 
 # 欢迎来到「未完成宇宙」
 

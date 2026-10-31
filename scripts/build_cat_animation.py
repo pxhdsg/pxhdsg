@@ -19,27 +19,27 @@ SOURCES = {
 
 # Pose, horizontal/vertical offset, size, eyes, hold time, tail angle.
 STATES = [
-    ("sit", 0, 0, 1, "open", 240, -5),
-    ("sit", 0, -3, 1, "open", 150, -2),
-    ("sit", 0, -4, 1, "half", 90, 2),
-    ("sit", 0, -3, 1, "closed", 100, 5),
-    ("sit", 0, 0, 1, "open", 160, 2),
-    ("stretch", 0, 0, 1, "open", 220, 0),
-    ("stretch", 0, 2, 1.02, "open", 140, 0),
-    ("stretch", 0, 0, 1.03, "open", 140, 0),
-    ("stretch", 0, -2, 1, "open", 180, 0),
-    ("leap", -18, 24, 1, "open", 120, 0),
-    ("leap", -10, 8, 1, "open", 110, 0),
-    ("leap", 0, -12, 1, "open", 110, 0),
-    ("leap", 10, -6, 1, "open", 110, 0),
-    ("leap", 18, 20, 1, "open", 130, 0),
-    ("sit", 0, -2, 1, "open", 190, -2),
-    ("sleep", 0, 0, 1, "closed", 250, 0),
-    ("sleep", 0, 0, 1.015, "closed", 230, 0),
-    ("sleep", 0, 0, 1.025, "closed", 230, 0),
-    ("sleep", 0, 0, 1.015, "closed", 230, 0),
-    ("sleep", 0, 0, 1, "closed", 260, 0),
-    ("sit", 0, 0, 1, "open", 240, -5),
+    ("sit", 0, 0, 1, "open", 450, -5),
+    ("sit", 0, -3, 1, "open", 350, -2),
+    ("sit", 0, -4, 1, "half", 240, 2),
+    ("sit", 0, -3, 1, "closed", 280, 5),
+    ("sit", 0, 0, 1, "open", 500, 2),
+    ("stretch", 0, 0, 1, "open", 500, 0),
+    ("stretch", 0, 2, 1.02, "open", 380, 0),
+    ("stretch", 0, 0, 1.03, "open", 380, 0),
+    ("stretch", 0, -2, 1, "open", 550, 0),
+    ("leap", -18, 24, 1, "open", 240, 0),
+    ("leap", -10, 8, 1, "open", 220, 0),
+    ("leap", 0, -12, 1, "open", 300, 0),
+    ("leap", 10, -6, 1, "open", 220, 0),
+    ("leap", 18, 20, 1, "open", 250, 0),
+    ("sit", 0, -2, 1, "open", 350, -2),
+    ("sleep", 0, 0, 1, "closed", 550, 0),
+    ("sleep", 0, 0, 1.015, "closed", 500, 0),
+    ("sleep", 0, 0, 1.025, "closed", 500, 0),
+    ("sleep", 0, 0, 1.015, "closed", 500, 0),
+    ("sleep", 0, 0, 1, "closed", 600, 0),
+    ("sit", 0, 0, 1, "open", 500, -5),
 ]
 
 
@@ -117,14 +117,33 @@ def make_frame(layers: dict, state: tuple) -> Image.Image:
 
 
 def gif_palette(frames: list[Image.Image]) -> Image.Image:
-    sample = Image.new("RGB", (360 * len(frames), 360), "#050507")
-    for index, frame in enumerate(frames):
-        sample.paste(frame, (index * 360, 0), frame)
+    chosen = frames[::max(1, len(frames) // 6)]
+    width, height = frames[0].size
+    sample = Image.new("RGB", (width * len(chosen), height), "#050507")
+    for index, frame in enumerate(chosen):
+        sample.paste(frame, (index * width, 0), frame)
     quantized = sample.quantize(colors=255, method=Image.MEDIANCUT)
     colors = quantized.getpalette()[:765]
     palette = Image.new("P", (1, 1))
     palette.putpalette([255, 0, 255] + colors + [0] * (768 - 3 - len(colors)))
     return palette
+
+
+def save_gif(frames: list[Image.Image], path: Path) -> None:
+    palette = gif_palette(frames)
+    indexed = []
+    for frame in frames:
+        rgb = Image.new("RGB", frame.size, "#050507")
+        rgb.paste(frame, mask=frame.getchannel("A"))
+        gif_frame = rgb.quantize(palette=palette, dither=Image.NONE)
+        gif_frame.paste(0, mask=frame.getchannel("A").point(lambda value: 255 if value < 100 else 0))
+        gif_frame.info["transparency"] = 0
+        indexed.append(gif_frame)
+    indexed[0].save(
+        path, save_all=True, append_images=indexed[1:],
+        duration=[state[5] for state in STATES], loop=0, disposal=2,
+        transparency=0, optimize=False,
+    )
 
 
 def main() -> None:
@@ -146,26 +165,20 @@ def main() -> None:
         sheet_draw.text((x + 18, y + 352), f"FRAME {index + 1:02d} / {STATES[index][0].upper()}", fill="#b7d9e4")
     sheet.save(FRAMES / "contact-sheet.png", optimize=True)
 
-    palette = gif_palette(frames)
-    indexed = []
+    save_gif(frames, ASSETS / "snow-cat-animated.gif")
+
+    banner = Image.open(ASSETS / "banner-base.png").convert("RGBA")
+    corner_mask = Image.new("L", banner.size)
+    ImageDraw.Draw(corner_mask).rounded_rectangle((0, 0, banner.width - 1, banner.height - 1),
+                                                   radius=22, fill=255)
+    banner.putalpha(corner_mask)
+    banner_frames = []
     for frame in frames:
-        rgb = Image.new("RGB", frame.size, "#050507")
-        rgb.paste(frame, mask=frame.getchannel("A"))
-        gif_frame = rgb.quantize(palette=palette, dither=Image.NONE)
-        gif_frame.paste(0, mask=frame.getchannel("A").point(lambda value: 255 if value < 100 else 0))
-        gif_frame.info["transparency"] = 0
-        indexed.append(gif_frame)
-    indexed[0].save(
-        ASSETS / "snow-cat-animated.gif",
-        save_all=True,
-        append_images=indexed[1:],
-        duration=[state[5] for state in STATES],
-        loop=0,
-        disposal=2,
-        transparency=0,
-        optimize=False,
-    )
-    print(f"Created {len(frames)} frames and {ASSETS / 'snow-cat-animated.gif'}")
+        composite = banner.copy()
+        composite.alpha_composite(frame.resize((305, 305), Image.LANCZOS), (855, 18))
+        banner_frames.append(composite)
+    save_gif(banner_frames, ASSETS / "banner-animated.gif")
+    print(f"Created {len(frames)} frames and two GIFs in {ASSETS}")
 
 
 if __name__ == "__main__":

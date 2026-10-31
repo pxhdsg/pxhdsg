@@ -1,12 +1,10 @@
 <p align="center">
-  <img src="./assets/banner.svg" alt="IDEAS IN MOTION：未完成宇宙" width="100%" />
+  <img src="./assets/banner-animated.gif" alt="IDEAS IN MOTION：头像里的雪地像素猫在横幅右侧眨眼、伸懒腰、跃起、蜷着睡觉" width="100%" />
 </p>
 
 <p align="center">
   <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&amp;size=19&amp;duration=2600&amp;pause=900&amp;color=63E6D6&amp;center=true&amp;vCenter=true&amp;width=760&amp;height=40&amp;lines=Ideas+become+experiments.;Experiments+become+stories.;The+next+chapter+is+still+loading..." alt="不断变化的创作宣言" />
 </p>
-
-<img src="./assets/snow-cat-animated.gif" align="right" width="220" alt="从头像中走出来的雪地像素猫：眨眼、伸懒腰、跃起、蜷着睡觉" />
 
 # 欢迎来到「未完成宇宙」
 

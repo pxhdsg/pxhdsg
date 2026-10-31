@@ -77,7 +77,7 @@ def build_svg(repos: int, stars: int, followers: int) -> str:
   <circle cx="947" cy="31" r="5" fill="#78eddd"/>
   <circle cx="947" cy="31" r="10" fill="none" stroke="#78eddd" stroke-opacity=".3"/>
   {''.join(cells)}
-  <text x="58" y="185" class="footer">LIVE TELEMETRY  /  every universe begins at zero</text>
+  <text x="58" y="185" class="footer">DAILY SIGNALS  /  every universe begins at zero</text>
 </svg>
 """
 

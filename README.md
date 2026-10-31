@@ -32,7 +32,7 @@
 | **Multimodal AI** | 视觉、语言和行动怎样真正协同？ |
 | **Recursive Self-Improvement** | 系统怎样在反馈中持续改进，又怎样证明自己真的进步了？ |
 
-## 实时信号
+## 每日信号
 
 <p align="center">
   <img src="./assets/stats.svg" alt="pxhdsg 的 GitHub 公开数据统计" width="100%" />

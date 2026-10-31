@@ -6,17 +6,13 @@
   <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&amp;size=19&amp;duration=2600&amp;pause=900&amp;color=63E6D6&amp;center=true&amp;vCenter=true&amp;width=760&amp;height=40&amp;lines=Ideas+become+experiments.;Experiments+become+stories.;The+next+chapter+is+still+loading..." alt="不断变化的创作宣言" />
 </p>
 
+<img src="./assets/snow-cat-animated.gif" align="right" width="220" alt="从头像中走出来的雪地像素猫：眨眼、摇尾巴、抬爪挥手" />
+
 # 欢迎来到「未完成宇宙」
 
 这里收集那些还没有标准答案的念头：会读懂屏幕的智能体，能把视觉与语言接在一起的模型，还有会反过来改进自己的 AI 系统。
 
 有些念头会长成论文，有些会变成能运行的工具；也有些只留下一个足够好的问题。这个仓库会记录它们从灵光一现到反复试验的过程。
-
-<p align="center">
-  <img src="./assets/snow-cat.svg" alt="从头像雪原走来的浅色像素猫" width="108" />
-  <br />
-  <sub>入口管理员：从头像里的雪原跑来，负责巡视灵感</sub>
-</p>
 
 ## 这座实验场会长出什么？
 

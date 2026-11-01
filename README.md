@@ -6,9 +6,9 @@
   <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&amp;size=19&amp;duration=2600&amp;pause=900&amp;color=63E6D6&amp;center=true&amp;vCenter=true&amp;width=760&amp;height=40&amp;lines=Ideas+become+experiments.;Experiments+become+stories.;The+next+chapter+is+still+loading..." alt="不断变化的创作宣言" />
 </p>
 
-# 欢迎来到「未完成宇宙」
+# 欢迎来到「AI宇宙」
 
-这里收集那些还没有标准答案的念头：会读懂屏幕的智能体，能把视觉与语言接在一起的模型，还有会反过来改进自己的 AI 系统。
+不久的将来，周五晚上你随口说：“下周去海边待三天，预算别太高，最好还能看一场日出。”AI 便打开地图、天气、车票和酒店页面，读懂屏幕上的信息，比较路线与价格，再把零散的选择编排成一份能真正出发的计划。临行前如果天气突变，它会重新安排交通和行程；遇到没见过的页面，也能边看边学，下一次做得更好。
 
 有些念头会长成论文，有些会变成能运行的工具；也有些只留下一个足够好的问题。这个仓库会记录它们从灵光一现到反复试验的过程。
 
